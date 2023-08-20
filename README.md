@@ -4,12 +4,12 @@
 
 [Nix] is a popular package manager which boasts tens of thousands of [packages].
 When combined with [development shells], it provides reproducible development
-environments where development dependencies can be easily identified and pinned.
+environments where dependencies can be easily identified and pinned.
 
 [Earthly] provides a friendly UX on top of [Docker] and [Buildkit]. It allows
 defining targets (similar to [make]) which can be executed the same locally as
-in CI. Additionally, with Earthly satellites, caching is given first-class
-treatment resuling in a significant decrease in build times.
+they are in CI. Additionally, with Earthly satellites, caching is given
+first-class treatment resulting in a significant decrease in build times.
 
 Why combine the two? Development shells are unmatched in terms of developer
 productivity, especially across large teams. However, utilizing them requires
