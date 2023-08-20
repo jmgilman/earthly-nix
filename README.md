@@ -1,4 +1,4 @@
-# nix-earthly
+# earthly-nix
 
 > An Earthfile for installing and using Nix development shells
 
@@ -31,6 +31,44 @@ This repository provides two things:
 
 1. A base image (debian slim) which installs the latest version of Nix
 2. A [UDC] which loads the default development shell from a `flake.nix`
+
+Additionally, it presumes the following structure in your local repository:
+
+- nix/**
+- flake.nix
+- flake.lock
+
+Where `nix/**` is a directory where dependent nix code is located. The UDT will
+automatically copy these files into the container and load the default
+development shell.
+
+A typical Earthfile might look like:
+
+```Earthfile
+VERSION 0.7
+
+nix:
+    FROM github.com/jmgilman/earthly-nix+nix
+    DO github.com/jmgilman/earthly-nix+SETUP
+
+test:
+    FROM +nix
+    RUN with_nix treefmt
+```
+
+In the first target, we inherit from the `nix` target which contains all of the
+Nix tooling. After that, we call the `SETUP` UDC which loads the default
+development shell from your local repository. Finally, it writes a `with_nix`
+script which can be used for calling nix dependencies. In the above example,
+we call the `treefmt` CLI which was supplied by our development shell.
+
+## Why not build with Nix?
+
+Building with Nix is still very much possible. The benefit that Earthly provides
+is not requiring a Nix installation on your local system. For solo developers
+using Nix, the extra layer might not make sense. Where it excels is in an
+open-source project where external contributors might not be interested in
+setting up Nix.
 
 [buildkit]: https://docs.docker.com/build/buildkit/
 [development shells]: https://github.com/numtide/devshell
